@@ -1,0 +1,69 @@
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char s[100], key[] = "MONARCHY";
+    char a[5][5], used[26] = {0};
+    int i, j, r, c, x, y, n = 0;
+
+    used['J' - 'A'] = 1;
+
+    for (i = 0; key[i]; i++) {
+        char ch = toupper(key[i]);
+        if (ch == 'J') ch = 'I';
+        if (!used[ch - 'A']) {
+            a[n / 5][n % 5] = ch;
+            used[ch - 'A'] = 1;
+            n++;
+        }
+    }
+
+    for (i = 0; i < 26; i++) {
+        if (!used[i]) {
+            a[n / 5][n % 5] = 'A' + i;
+            n++;
+        }
+    }
+
+    printf("Enter message: ");
+    scanf("%99s", s);
+
+    for (i = 0; s[i]; i++) s[i] = toupper(s[i]);
+
+    printf("Encrypted message: ");
+
+    for (i = 0; s[i]; i += 2) {
+        char p = s[i], q = s[i + 1] ? s[i + 1] : 'X';
+
+        if (p == 'J') p = 'I';
+        if (q == 'J') q = 'I';
+        if (p == q) q = 'X';
+
+        for (r = 0; r < 5; r++)
+            for (c = 0; c < 5; c++) {
+                if (a[r][c] == p) x = r, y = c;
+                if (a[r][c] == q) {
+                    
+                }
+            }
+
+        int r1 = x, c1 = y, r2 = 0, c2 = 0;
+
+        for (r = 0; r < 5; r++)
+            for (c = 0; c < 5; c++)
+                if (a[r][c] == q) r2 = r, c2 = c;
+
+        if (r1 == r2)
+            printf("%c%c", a[r1][(c1 + 1) % 5],
+                   a[r2][(c2 + 1) % 5]);
+        else if (c1 == c2)
+            printf("%c%c", a[(r1 + 1) % 5][c1],
+                   a[(r2 + 1) % 5][c2]);
+        else
+            printf("%c%c", a[r1][c2], a[r2][c1]);
+    }
+
+    return 0;
+}

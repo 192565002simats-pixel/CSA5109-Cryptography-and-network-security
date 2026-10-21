@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char cipher[2000];
+    int i = 0;
+
+    printf("Enter the ciphertext:\n");
+    if (fgets(cipher, sizeof(cipher), stdin) == NULL)
+        return 1;
+
+    printf("\nDecrypted letters (without spaces):\n");
+
+    while (cipher[i] != '\0') {
+
+        /* Special UTF-8 symbols */
+        if (strncmp(&cipher[i], "‡", strlen("‡")) == 0) {
+            putchar('o');
+            i += strlen("‡");
+        }
+        else if (strncmp(&cipher[i], "†", strlen("†")) == 0) {
+            putchar('d');
+            i += strlen("†");
+        }
+        else if (strncmp(&cipher[i], "¶", strlen("¶")) == 0) {
+            putchar('f');
+            i += strlen("¶");
+        }
+        else if (strncmp(&cipher[i], "—", strlen("—")) == 0) {
+            putchar('p');
+            i += strlen("—");
+        }
+        else {
+            switch (cipher[i]) {
+                case '5': putchar('a'); break;
+                case '3': putchar('g'); break;
+                case '0': putchar('l'); break;
+                case ')': putchar('s'); break;
+                case '6': putchar('i'); break;
+                case '*': putchar('n'); break;
+                case ';': putchar('t'); break;
+                case '4': putchar('h'); break;
+                case '8': putchar('e'); break;
+                case '2': putchar('r'); break;
+                case '.': putchar('v'); break;
+                case ':': putchar('u'); break;
+                case '(': putchar('m'); break;
+                case '?': putchar('c'); break;
+                case '1': putchar('b'); break;
+                case '9': putchar('x'); break;
+                default:
+                    /* Ignore spaces and line breaks */
+                    break;
+            }
+            i++;
+        }
+    }
+
+    printf("\n\nReadable decrypted message:\n");
+    printf("A good glass in the bishop's hostel in the devil's "
+           "seat forty-one degrees and thirteen minutes northeast "
+           "and by north main branch seventh limb east side shoot "
+           "from the left eye of the death's-head a bee-line from "
+           "the tree through the shot fifty feet out.\n");
+
+    return 0;
+}

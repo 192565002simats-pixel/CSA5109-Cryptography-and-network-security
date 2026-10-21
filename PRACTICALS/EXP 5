@@ -1,0 +1,22 @@
+
+#include <stdio.h>
+
+int main() {
+    char s[100];
+    int a, b, i;
+
+    printf("Enter message: ");
+    scanf("%99s", s);
+
+    printf("Enter a and b: ");
+    scanf("%d %d", &a, &b);
+
+    for (i = 0; s[i] != '\0'; i++) {
+        int p = s[i] - 'A';
+        s[i] = (a * p + b) % 26 + 'A';
+    }
+
+    printf("Encrypted message: %s", s);
+
+    return 0;
+}

@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char keyword[100], plain[1000];
+    char cipher[27];
+    int used[26] = {0};
+    int i, j = 0;
+
+    printf("Enter keyword: ");
+    scanf("%99s", keyword);
+
+    /* Add unique letters from the keyword */
+    for (i = 0; keyword[i] != '\0'; i++) {
+        char ch = toupper((unsigned char)keyword[i]);
+
+        if (ch >= 'A' && ch <= 'Z' && !used[ch - 'A']) {
+            cipher[j++] = ch;
+            used[ch - 'A'] = 1;
+        }
+    }
+
+    /* Add the remaining letters in alphabetical order */
+    for (i = 0; i < 26; i++) {
+        if (!used[i]) {
+            cipher[j++] = 'A' + i;
+        }
+    }
+
+    cipher[26] = '\0';
+
+    printf("\nPlain alphabet : ");
+    for (i = 0; i < 26; i++)
+        printf("%c ", 'a' + i);
+
+    printf("\nCipher alphabet: ");
+    for (i = 0; i < 26; i++)
+        printf("%c ", cipher[i]);
+
+    getchar();
+
+    printf("\n\nEnter plaintext: ");
+    fgets(plain, sizeof(plain), stdin);
+
+    for (i = 0; plain[i] != '\0'; i++) {
+        if (isupper((unsigned char)plain[i])) {
+            plain[i] = cipher[plain[i] - 'A'];
+        } else if (islower((unsigned char)plain[i])) {
+            plain[i] = tolower(cipher[plain[i] - 'a']);
+        }
+    }
+
+    printf("Encrypted text: %s", plain);
+
+    return 0;
+}

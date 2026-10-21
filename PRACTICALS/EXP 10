@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+char mat[5][5] = {
+    {'M', 'F', 'H', 'I', 'K'},
+    {'U', 'N', 'O', 'P', 'Q'},
+    {'Z', 'V', 'W', 'X', 'Y'},
+    {'E', 'L', 'A', 'R', 'G'},
+    {'D', 'S', 'T', 'B', 'C'}
+};
+
+void findPosition(char ch, int *r, int *c) {
+    int i, j;
+
+    if (ch == 'J')
+        ch = 'I';
+
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            if (mat[i][j] == ch) {
+                *r = i;
+                *c = j;
+                return;
+            }
+        }
+    }
+}
+
+int main() {
+    char input[500], text[500], output[500];
+    int i, n = 0, k = 0;
+    int r1, c1, r2, c2;
+
+    printf("Enter plaintext:\n");
+    fgets(input, sizeof(input), stdin);
+
+    /* Remove spaces and punctuation */
+    for (i = 0; input[i] != '\0'; i++) {
+        if (isalpha((unsigned char)input[i])) {
+            char ch = toupper((unsigned char)input[i]);
+            text[n++] = (ch == 'J') ? 'I' : ch;
+        }
+    }
+
+    text[n] = '\0';
+
+    /* Prepare letter pairs and insert X when necessary */
+    for (i = 0; i < n;) {
+        char a = text[i++];
+        char b;
+
+        if (i >= n) {
+            b = 'X';
+        } else if (text[i] == a) {
+            b = 'X';
+        } else {
+            b = text[i++];
+        }
+
+        findPosition(a, &r1, &c1);
+        findPosition(b, &r2, &c2);
+
+        if (r1 == r2) {
+            output[k++] = mat[r1][(c1 + 1) % 5];
+            output[k++] = mat[r2][(c2 + 1) % 5];
+        } else if (c1 == c2) {
+            output[k++] = mat[(r1 + 1) % 5][c1];
+            output[k++] = mat[(r2 + 1) % 5][c2];
+        } else {
+            output[k++] = mat[r1][c2];
+            output[k++] = mat[r2][c1];
+        }
+    }
+
+    output[k] = '\0';
+
+    printf("Encrypted text: %s\n", output);
+    return 0;
+}

@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char text[1000];
+    int freq[26] = {0};
+    int i, a = 3, b = 15;
+    int inverse = 9;
+
+    printf("Enter affine ciphertext: ");
+    fgets(text, sizeof(text), stdin);
+
+    for (i = 0; text[i] != '\0'; i++) {
+        if (isalpha((unsigned char)text[i])) {
+            char ch = toupper((unsigned char)text[i]);
+            freq[ch - 'A']++;
+        }
+    }
+    printf("\nLetter frequencies:\n");
+    for (i = 0; i < 26; i++) {
+        printf("%c : %d\n", 'A' + i, freq[i]);
+    }
+
+    printf("\nDecrypted text (assuming a=3, b=15):\n");
+for (i = 0; text[i] != '\0'; i++) {
+    if (isupper((unsigned char)text[i])) {
+        int c = text[i] - 'A';
+        text[i] = ((9 * (c - 15 + 26)) % 26) + 'A';
+    }
+    else if (islower((unsigned char)text[i])) {
+        int c = text[i] - 'a';
+        text[i] = ((9 * (c - 15 + 26)) % 26) + 'a';
+    }
+}
+
+printf("Decrypted text: %s", text);
+    printf("%s", text);
+    return 0;
+}
